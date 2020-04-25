@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "6871143389",
+    "firebase_url": "https://whatsapp-e5247.firebaseio.com",
+    "project_id": "whatsapp-e5247",
+    "storage_bucket": "whatsapp-e5247.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6871143389:android:976aa392aeca0eb02c5c34",
+        "android_client_info": {
+          "package_name": "marsmadoka98.gmail.whatsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "6871143389-n0g2ocfe01p2uf8t9l2ldviftjcldrtu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXqp6v-eO4YETx8H1gkqkQT9bwGfTMeUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "6871143389-n0g2ocfe01p2uf8t9l2ldviftjcldrtu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
