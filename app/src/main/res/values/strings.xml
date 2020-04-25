@@ -3,4 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="need_new_account"><u>Need new Account ?</u></string>
+    <string name="already_have_an_acount"><u>Already Have an Acount ?</u></string>
+    <string name="forget_password"><u>forget password ?</u></string>
 </resources>

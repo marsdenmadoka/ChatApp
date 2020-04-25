@@ -63,7 +63,8 @@
                 android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="forget password?"
+                android:text="@string/forget_password"
+                android:textColorLink="#EA0C0C"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"
@@ -72,13 +73,13 @@
                 />
             <TextView
                 android:layout_below="@+id/forget_password"
-                android:id="@+id/already_have_an_account"
+                android:id="@+id/need_newAccount"
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Need new Account ?"
+                android:text="@string/need_new_account"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"
@@ -86,7 +87,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 />
             <TextView
-                android:layout_below="@+id/already_have_an_account"
+                android:layout_below="@+id/need_newAccount"
                 android:id="@+id/txtloginusing"
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center"
