@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 private Toolbar mtoolbar;
 private ViewPager myviewpager;
 private TabLayout myTablayout;
+private TabsFragmentAdapter tabsFragmentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +22,13 @@ private TabLayout myTablayout;
         mtoolbar=findViewById(R.id.main_toolbar);
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setTitle("WhatsappClone");
+
+        // Acessing the Fragment and displaying them from the TabsFragmentAdapter
+        myviewpager=findViewById(R.id.viewpager);
+        tabsFragmentAdapter=new TabsFragmentAdapter(getSupportFragmentManager());
+        myviewpager.setAdapter(tabsFragmentAdapter);
+
+        myTablayout=findViewById(R.id.tabslayout);
+        myTablayout.setupWithViewPager(myviewpager);
     }
 }
