@@ -9,4 +9,5 @@
     <string name="find_friends">Find Friends</string>
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
+    <string name="create_group">Create Group</string>
 </resources>
