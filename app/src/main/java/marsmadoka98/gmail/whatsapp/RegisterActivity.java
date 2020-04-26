@@ -99,6 +99,7 @@ CreateAcountbtn.setOnClickListener(new View.OnClickListener() {
         Intent loginIntent = new Intent(RegisterActivity.this,LogInActivity.class);
         startActivity(loginIntent);
 
+
     }
     public void SendUserToMainActivity(){
         Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
