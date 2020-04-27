@@ -1,5 +1,6 @@
 package marsmadoka98.gmail.whatsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -50,6 +52,17 @@ public class GroupsFragment extends Fragment {
        listView.setAdapter(arrayAdapter);
 
        RetriveAndDisplayGroups();
+
+
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) { //int i is the position of the item in listview and long l is the id of the item in listview
+          String curentGroupName=adapterView.getItemAtPosition(position).toString();
+               Intent groupChatIntent = new Intent(getContext(),GroupChatActivity.class); //getContext() since we are using fragments
+            groupChatIntent.putExtra("groupName",curentGroupName);
+               startActivity(groupChatIntent);
+           }
+       });
 
         return groupFragmentView;
     }
