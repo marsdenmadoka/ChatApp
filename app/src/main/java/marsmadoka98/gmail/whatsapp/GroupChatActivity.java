@@ -83,7 +83,7 @@ private DatabaseReference GroupNameRef;
             public void onClick(View view) {
                 SaveMessageToFirebase();
                 userMessageInput.setText("");//clear the text view after you send the message
-
+                mScrollview.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
     }
@@ -179,6 +179,8 @@ Toast.makeText(GroupChatActivity.this,"Message cannot be empty",Toast.LENGTH_SHO
           String chatName=(String) ((DataSnapshot)iterator.next()).getValue();
           String chatTime=(String) ((DataSnapshot)iterator.next()).getValue();
           displayTextMessages.append(chatName +":\n" + chatMessage +":\n" + chatTime + "    " + chatDate + "\n\n\n");
+
+          mScrollview.fullScroll(ScrollView.FOCUS_DOWN);//scroll to the new message
       }
 
     }
