@@ -57,6 +57,14 @@ private EditText UserEmail,UserPasssowd;
             }
         });
 
+        PhoneLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent phoneIntent = new Intent(LogInActivity.this,PhoneLogInActivity.class);
+                startActivity(phoneIntent);
+            }
+        });
+
 
 
     }
