@@ -33,7 +33,7 @@ private String curentGroupName;
 
         mToolbar=findViewById(R.id.group_chat_bar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("groupName");
+        getSupportActionBar().setTitle(curentGroupName);
 
 
         sendMessageutton=findViewById(R.id.send_message_button);

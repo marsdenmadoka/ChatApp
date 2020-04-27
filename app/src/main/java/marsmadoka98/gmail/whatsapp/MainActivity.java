@@ -155,7 +155,7 @@ private FirebaseUser currentUser;
                 dialogInterface.cancel();
             }
         });
- builder.show();
+ builder.show().getWindow().setLayout(600,500);;
 
     }
 
