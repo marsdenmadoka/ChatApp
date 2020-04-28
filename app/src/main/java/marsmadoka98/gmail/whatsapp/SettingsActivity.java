@@ -89,8 +89,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GalleryPick && resultCode == RESULT_OK && data!=null){
-            imageUri = data.getData();
-            CropImage.activity(imageUri)
+            Uri imageUri = data.getData();
+            CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
                     .start(this);
@@ -99,22 +99,37 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                setImageProfile.setImageURI(resultUri);
+               // setImageProfile.setImageURI(resultUri);
                 //sending image to firebase
                 // RootRef.child("Users").child(currentUserID).child("image")
                 //filepath=UserProfileImageRef.child(currentUserID + ".jpg").child(resultUri.getLastPathSegment());
                 final StorageReference filepath=UserProfileImageRef.child(currentUserID + ".jpg");
-                filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+               // UploadTask uploadTask=filepath.putFile(imageUri);
+                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                final Uri downloadUrl = uri;
-                                DatabaseReference newpost=RootRef.push(); //pushing to database
-                                newpost.child("Users").child(currentUserID).child("image").setValue(downloadUrl.toString());;
-                                Toast.makeText(SettingsActivity.this,"image uploaded to db",Toast.LENGTH_SHORT).show();
-                            }}); }}); } }
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+                        if(task.isSuccessful()){
+
+                            Toast.makeText(SettingsActivity.this,"image update succesfull",Toast.LENGTH_SHORT).show();
+                           // final String downloadUrl = task.getResult().getDownloadUrl.toString
+                         final String downloadUrl =UserProfileImageRef.getDownloadUrl().toString();
+                            RootRef.child("Users").child(currentUserID).child("image")
+                                    .setValue(downloadUrl)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                     if(task.isSuccessful()){
+
+                        Toast.makeText(SettingsActivity.this,"imaged saved in db",Toast.LENGTH_SHORT).show();
+                                 } else{
+                                         String message=task.getException().toString();
+                                         Toast.makeText(SettingsActivity.this, "error:"+message, Toast.LENGTH_SHORT).show();
+
+                                     }
+                                        }
+                                    }); } }}); } }
 
     }
 
