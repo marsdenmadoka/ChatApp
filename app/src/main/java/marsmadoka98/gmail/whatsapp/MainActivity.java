@@ -103,6 +103,8 @@ private FirebaseUser currentUser;
     @Override
     public  boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.main_find_friends_option){
+            Intent intent = new Intent(MainActivity.this,FindFriendsActivity.class);
+            startActivity(intent);
 
         }
         if(item.getItemId()==R.id.settings){
