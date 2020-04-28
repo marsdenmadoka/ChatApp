@@ -66,6 +66,7 @@ public class PhoneLogInActivity extends AppCompatActivity {
                         TimeUnit.SECONDS,
                         PhoneLogInActivity.this,
                         callbacks);
+                progressDialog.dismiss();
                 }
 
             }
