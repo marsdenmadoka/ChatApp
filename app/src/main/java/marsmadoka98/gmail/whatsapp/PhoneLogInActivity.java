@@ -66,7 +66,7 @@ public class PhoneLogInActivity extends AppCompatActivity {
                         TimeUnit.SECONDS,
                         PhoneLogInActivity.this,
                         callbacks);
-                progressDialog.dismiss();
+
                 }
 
             }
@@ -81,6 +81,7 @@ public class PhoneLogInActivity extends AppCompatActivity {
 
              @Override
              public void onVerificationFailed(@NonNull FirebaseException e) {
+                 progressDialog.dismiss();
                  Toast.makeText(PhoneLogInActivity.this, "invalid Phone number!! please enter a correct phone number using your country code", Toast.LENGTH_LONG).show();
 
                  sendVerificationcodebtn.setVisibility(View.VISIBLE);
@@ -95,6 +96,7 @@ public class PhoneLogInActivity extends AppCompatActivity {
                  // Save verification ID and resending token so we can use them later
                  mVerificationId = verificationId;
                  mResendToken = token;
+                 progressDialog.dismiss();
                  Toast.makeText(PhoneLogInActivity.this, "verification code sent please check!", Toast.LENGTH_SHORT).show();
                  sendVerificationcodebtn.setVisibility(View.INVISIBLE);
                  InputphoneNumber.setVisibility(View.INVISIBLE);
