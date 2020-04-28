@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +22,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -36,6 +41,8 @@ public class SettingsActivity extends AppCompatActivity {
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
+    private StorageReference UserProfileImageRef;
+    private Uri imageUri = null;
 
     private static final int GalleryPick =1;
     @Override
@@ -46,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+        UserProfileImageRef= FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         setUsername = findViewById(R.id.set_user_name);
         setUserstatus = findViewById(R.id.set_profile_status);
@@ -81,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GalleryPick && resultCode == RESULT_OK && data!=null){
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
@@ -92,10 +100,21 @@ public class SettingsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 setImageProfile.setImageURI(resultUri);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
+                //sending image to firebase
+                // RootRef.child("Users").child(currentUserID).child("image")
+                //filepath=UserProfileImageRef.child(currentUserID + ".jpg").child(resultUri.getLastPathSegment());
+                final StorageReference filepath=UserProfileImageRef.child(currentUserID + ".jpg");
+                filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                final Uri downloadUrl = uri;
+                                DatabaseReference newpost=RootRef.push(); //pushing to database
+                                newpost.child("Users").child(currentUserID).child("image").setValue(downloadUrl.toString());;
+                                Toast.makeText(SettingsActivity.this,"image uploaded to db",Toast.LENGTH_SHORT).show();
+                            }}); }}); } }
 
     }
 
@@ -145,6 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                          setUsername.setText(retrieveUserName);
                          setUserstatus.setText(retrieveStatus);
+                            Picasso.get().load(retrieveImage).into(setImageProfile);
 
                         }else if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))){
                             String retrieveUserName=dataSnapshot.child("name").getValue().toString();
