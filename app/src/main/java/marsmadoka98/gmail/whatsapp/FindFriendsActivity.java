@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,9 @@ public class FindFriendsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 String visit_user_id= getRef(position).getKey();
+                                Intent profileIntent = new Intent(FindFriendsActivity.this,ProfileActivity.class);
+                                profileIntent.putExtra("visit_user_id",visit_user_id);
+                                startActivity(profileIntent);
 
 
                             }
