@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView userProfileimage;
     private TextView userProfileName,userProfilestatus;
-    private Button sendMessageRequestButton;
+    private Button sendMessageRequestButton,DeclineMessageRequestBtn;
     private DatabaseReference UserRef;
     private DatabaseReference ChatRequestRef;
     private FirebaseAuth mAuth;
@@ -52,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         userProfileName=findViewById(R.id.visit_profile_name);
         userProfilestatus=findViewById(R.id.visit_profile_status);
         sendMessageRequestButton=findViewById(R.id.send_message_request_button);
+        DeclineMessageRequestBtn=findViewById(R.id.cancel_message_request_button);
 
         Current_state="new";
 
@@ -107,6 +108,18 @@ public class ProfileActivity extends AppCompatActivity {
                             if(request_type.equals("sent")){
                                 Current_state = "request_sent";
                                 sendMessageRequestButton.setText("Cancel Chat Request");
+                            }else if(request_type.equals("received")){
+                                Current_state="request_received";
+                                sendMessageRequestButton.setText("Accept Chat Request");
+
+                                DeclineMessageRequestBtn.setVisibility(View.VISIBLE);
+                                DeclineMessageRequestBtn.setEnabled(true);
+                                DeclineMessageRequestBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        CancelChatRequest();
+                                    }
+                                });
                             }
                         }
 
@@ -181,6 +194,8 @@ public class ProfileActivity extends AppCompatActivity {
                                         sendMessageRequestButton.setEnabled(true);
                                         Current_state = "new";
                                         sendMessageRequestButton.setText("Send Message");
+                                        sendMessageRequestButton.setVisibility(View.INVISIBLE);
+                                        sendMessageRequestButton.setEnabled(false);
                                     }
 
                                 }
