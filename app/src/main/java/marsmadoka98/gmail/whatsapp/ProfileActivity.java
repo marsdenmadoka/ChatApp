@@ -101,6 +101,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild(receiverUserID)){
+
+                            String request_type=dataSnapshot.child(receiverUserID).child("request_type").getValue().toString();
+                            if(request_type.equals("sent")){
+                                Current_state = "request_sent";
+                                sendMessageRequestButton.setText("Cancel Chat Request");
+                            }
+                        }
 
                     }
 
@@ -117,8 +125,9 @@ public class ProfileActivity extends AppCompatActivity {
                     sendMessageRequestButton.setEnabled(false);//one you click the button it should remain inactive untill the reciever accepts your request
                     if(Current_state.equals("new")){ //if the friends are new to each other
                         SendChatRequest();
-
-
+                    }
+                    if(Current_state.equals("request_sent")){
+                        CancelChatRequest();//when on wants to cancel the friends request/messge request he/she sent
                     }
 
                 }
@@ -153,7 +162,32 @@ public class ProfileActivity extends AppCompatActivity {
                    }
                     }
                 });
+    }
 
+    public void CancelChatRequest(){ //if the user cancels the request/friend request they sent
 
-        }
+        ChatRequestRef.child(senderUserID).child(receiverUserID)
+        .removeValue()
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    ChatRequestRef.child(receiverUserID).child(senderUserID)
+                            .removeValue()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        sendMessageRequestButton.setEnabled(true);
+                                        Current_state = "new";
+                                        sendMessageRequestButton.setText("Send Message");
+                                    }
+
+                                }
+                            });
+                }
+            }
+        });
+
+    }
 }

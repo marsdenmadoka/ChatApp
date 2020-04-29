@@ -55,4 +55,17 @@
         android:layout_marginRight="65dp"
         android:textColor="@android:color/background_light"
         android:background="@drawable/button"/>
+
+    <Button
+        android:id="@+id/cancel_message_request_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/send_message_request_button"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        android:text="Cancel Request"
+        android:layout_marginLeft="65dp"
+        android:layout_marginRight="65dp"
+        android:textColor="@android:color/background_light"
+        android:background="@drawable/button"/>
 </RelativeLayout>
