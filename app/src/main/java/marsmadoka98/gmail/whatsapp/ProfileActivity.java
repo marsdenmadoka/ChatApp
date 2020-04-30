@@ -166,6 +166,10 @@ public class ProfileActivity extends AppCompatActivity {
                         AcceptChatRequest();
 
                     }
+                    if(Current_state.equals("friends")){
+                        RemoveFriendFromContact(); //unfriend someone
+
+                    }
 
                 }
             });
@@ -276,5 +280,33 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+
+    public void  RemoveFriendFromContact(){
+        ContactRef.child(senderUserID).child(receiverUserID)
+                .removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            ContactRef.child(receiverUserID).child(senderUserID)
+                                    .removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                sendMessageRequestButton.setEnabled(true);
+                                                Current_state = "new";
+                                                sendMessageRequestButton.setText("Send Message");
+                                                sendMessageRequestButton.setVisibility(View.INVISIBLE);
+                                                sendMessageRequestButton.setEnabled(false);
+                                            }
+
+                                        }});
+                        }
+                    }
+                });
+
     }
 }
