@@ -47,11 +47,12 @@ public class ContactsFragment extends Fragment {
         ContactsView=inflater.inflate(R.layout.fragment_contacts, container, false);
         myContactsRecycler= ContactsView.findViewById(R.id.Contacts_recycler_viewer);
         myContactsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ContactsRef= FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID); //Contacts here is our database Rootchild having contacts in our database
-       UserRef=FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth=FirebaseAuth.getInstance();
         currentUserID=mAuth.getCurrentUser().getUid();
+        ContactsRef= FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID); //Contacts here is our database Rootchild having contacts in our database
+       UserRef=FirebaseDatabase.getInstance().getReference().child("Users");
+
+
 
         return  ContactsView;
     }
