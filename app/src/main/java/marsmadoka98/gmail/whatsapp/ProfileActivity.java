@@ -149,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-        //sending the request
+        //sending the  friend request
         if(!senderUserID.equals(receiverUserID)){ //if sender id is not equal to receiver userID that means you cannot send message for yourself
             // hence this validation meaaing the senderID must not be equal to the ReceiverUserID
             sendMessageRequestButton.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +162,7 @@ public class ProfileActivity extends AppCompatActivity {
                     if(Current_state.equals("request_sent")){
                         CancelChatRequest();//when on wants to cancel the friends request/messge request he/she sent
                     }
-                    if(Current_state.equals("request_received")){
+                    if(Current_state.equals("request_received")){ //accepting the fiend request
                         AcceptChatRequest();
 
                     }
@@ -176,8 +176,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         }else{
             sendMessageRequestButton.setVisibility(View.INVISIBLE); //means that set the set the sendmessage button inivisible in your own account whe you click
-            // the profile actvity. since you cannot send your self a message click your name in the itemView under findfriends activty and see the working it.
-        } }
+            // the profile actvity. since you cannot send your self a message or a chat reequest click your name in the itemView under findfriends activty and see the working it.
+        }
+    }
 
         public void SendChatRequest(){ //friend request
         ChatRequestRef.child(senderUserID).child(receiverUserID)

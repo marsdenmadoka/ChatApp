@@ -39,7 +39,7 @@ public class GroupsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+//displaying our groups in listView fetching it from our database
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class GroupsFragment extends Fragment {
 
        RetriveAndDisplayGroups();
 
-
+//open new group for caht
        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) { //int i is the position of the item in listview and long l is the id of the item in listview

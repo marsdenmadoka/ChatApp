@@ -162,7 +162,7 @@ private FirebaseUser currentUser;
     }
 
     public void  CreateNewGroup(final String groupName){
- RootRef.child("Groups").child(groupName).setValue("")   //create a RootChild Called Groups with child of groupname
+ RootRef.child("Groups").child(groupName).setValue("")   //create a RootChild Called Groups with child of the groupname
 .addOnCompleteListener(new OnCompleteListener<Void>() {
     @Override
     public void onComplete(@NonNull Task<Void> task) {
