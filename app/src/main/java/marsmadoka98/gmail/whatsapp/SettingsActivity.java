@@ -144,11 +144,11 @@ public class SettingsActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(userStatus)) {
             Toast.makeText(SettingsActivity.this, "please insert user status", Toast.LENGTH_SHORT).show();
         } else {  //saving the status username to firebase
-            HashMap<String, String> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid", currentUserID);
             profileMap.put("name", Username);//make sure this name is the same as that one of the dataSnapshot child else the app will crash
             profileMap.put("status", userStatus);
-            RootRef.child("Users").child(currentUserID).setValue(profileMap)
+            RootRef.child("Users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
