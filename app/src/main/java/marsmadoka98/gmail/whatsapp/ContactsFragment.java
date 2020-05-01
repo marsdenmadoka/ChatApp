@@ -46,6 +46,7 @@ public class ContactsFragment extends Fragment {
         // Inflate the layout for this fragment
         ContactsView=inflater.inflate(R.layout.fragment_contacts, container, false);
         myContactsRecycler= ContactsView.findViewById(R.id.Contacts_recycler_viewer);
+
         myContactsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mAuth=FirebaseAuth.getInstance();
         currentUserID=mAuth.getCurrentUser().getUid();

@@ -29,6 +29,9 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter {
             case 2:
                 ContactsFragment contactsFragment = new ContactsFragment();
                 return  contactsFragment;
+            case 3:
+                FriendsRequestFragment RequestFragment = new FriendsRequestFragment();
+                return  RequestFragment;
 
             default:
                 return null;
@@ -39,7 +42,7 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3; //return 3 since we had 3 fragments
+        return 4; //return 4 since we had 4 fragments
     }
 
     public CharSequence getPageTitle(int position){ //setting the fragment title
@@ -55,6 +58,8 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter {
             case 2:
 
                 return  "Contacts";
+            case 3:
+                return "Requests";
 
             default:
                 return null;
