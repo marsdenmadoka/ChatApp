@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -90,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GalleryPick && resultCode == RESULT_OK && data!=null){
             Uri imageUri = data.getData();
-            CropImage.activity()
+            CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
                     .start(this);
@@ -104,8 +104,65 @@ public class SettingsActivity extends AppCompatActivity {
                 // RootRef.child("Users").child(currentUserID).child("image")
                 //filepath=UserProfileImageRef.child(currentUserID + ".jpg").child(resultUri.getLastPathSegment());
                 final StorageReference filepath=UserProfileImageRef.child(currentUserID + ".jpg");
-               // UploadTask uploadTask=filepath.putFile(imageUri);
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                      if(task.isSuccessful()){
+                          Toast.makeText(SettingsActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
+
+                     final String downloadUri = task.getResult().getStorage().getDownloadUrl().toString();
+                     RootRef.child("Users").child(currentUserID).child("images")
+                             .setValue(downloadUri)
+                             .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<Void> task) {
+                          if(task.isSuccessful()){
+
+                              Toast.makeText(SettingsActivity.this, "stored in db", Toast.LENGTH_SHORT).show();
+                          }
+                                 }
+                             });
+                      }
+                    }
+                });
+                /*UploadTask uploadTask=filepath.putFile(resultUri);
+                Task<Uri> uriTask=uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()){
+                            String message=task.getException().toString();
+                            Toast.makeText(SettingsActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(SettingsActivity.this, "image uploaded sucessful!!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        return filepath.getDownloadUrl();
+
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if(task.isSuccessful()){
+                           Uri downloadUri=task.getResult();
+                            RootRef.child("Users").child(currentUserID).child("image")
+                                    .setValue(downloadUri)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(SettingsActivity.this, "image saved to db", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                    });
+                        }else{
+                            String err=task.getException().toString();
+                            Toast.makeText(SettingsActivity.this, "Error:"+err, Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+                /**filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
@@ -129,7 +186,12 @@ public class SettingsActivity extends AppCompatActivity {
 
                                      }
                                         }
-                                    }); } }}); } }
+                                    });
+                        }
+                    }
+                });**/
+            }
+        }
 
     }
 

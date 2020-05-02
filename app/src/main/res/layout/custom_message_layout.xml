@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/message_profile_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/profile_image"/>
+
+    <TextView
+        android:id="@+id/receiver_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:text="receiver message"
+        android:layout_toEndOf="@+id/message_profile_image"
+        android:background="@drawable/receiver_message_layout"/>
+
+    <TextView
+        android:id="@+id/sender_messages"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="@+id/receiver_messages"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/sender_message_layout"
+        android:text="sender message"/>
+
+</RelativeLayout>
