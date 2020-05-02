@@ -36,6 +36,7 @@ private RecyclerView chatlist;
 private DatabaseReference ChatsRefs,UsersRef;
 private FirebaseAuth mAuth;
 private String currentUserID;
+
     public ChatsFragment() {
         // Required empty public constructor
     }
@@ -71,15 +72,16 @@ private String currentUserID;
                     protected void onBindViewHolder(@NonNull final ChatsVieHolder holder, int position, @NonNull Contacts model) {
 
                         final String usersIds=getRef(position).getKey();
+                        final String[] retimage = {"default_image"};
                         UsersRef.child(usersIds).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                   if(dataSnapshot.exists()){
                       if(dataSnapshot.hasChild("image")){
-                          final String retimage=dataSnapshot.child("image").getValue().toString();
-                          Picasso.get().load(retimage).into(holder.profileimage);
+                        retimage[0] =dataSnapshot.child("image").getValue().toString();
+                          Picasso.get().load(retimage[0]).into(holder.profileimage);
                       }
-                      final  String retname=dataSnapshot.child("name").getValue().toString();
+                     final String retname=dataSnapshot.child("name").getValue().toString();
                       final  String retstatus=dataSnapshot.child("status").getValue().toString();
                       holder.username.setText(retname);
                       holder.userstatus.setText("Last Seen: "+"\n"+"Date " + " Time" );
@@ -90,6 +92,7 @@ private String currentUserID;
                          Intent chatintent = new Intent(getContext(),ChatActivity.class);
                          chatintent.putExtra("visit_user_id",usersIds);
                          chatintent.putExtra("visit_user_name",retname);
+                         chatintent.putExtra("visit_user_image", retimage[0]);
                          startActivity(chatintent);
                      }
                  });
