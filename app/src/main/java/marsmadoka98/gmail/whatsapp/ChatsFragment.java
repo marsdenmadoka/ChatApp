@@ -1,5 +1,6 @@
 package marsmadoka98.gmail.whatsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -73,14 +74,28 @@ private String currentUserID;
                         UsersRef.child(usersIds).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild("image")){
-                        final String retimage=dataSnapshot.child("image").getValue().toString();
-                        Picasso.get().load(retimage).into(holder.profileimage);
-                    }
-                    final  String retname=dataSnapshot.child("name").getValue().toString();
-                    final  String retstatus=dataSnapshot.child("status").getValue().toString();
+                  if(dataSnapshot.exists()){
+                      if(dataSnapshot.hasChild("image")){
+                          final String retimage=dataSnapshot.child("image").getValue().toString();
+                          Picasso.get().load(retimage).into(holder.profileimage);
+                      }
+                      final  String retname=dataSnapshot.child("name").getValue().toString();
+                      final  String retstatus=dataSnapshot.child("status").getValue().toString();
                       holder.username.setText(retname);
                       holder.userstatus.setText("Last Seen: "+"\n"+"Date " + " Time" );
+
+                 holder.itemView.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         Intent chatintent = new Intent(getContext(),ChatActivity.class);
+                         chatintent.putExtra("visit_user_id",usersIds);
+                         chatintent.putExtra("visit_user_name",retname);
+                         startActivity(chatintent);
+                     }
+                 });
+
+
+                  }
 
                             }
 
