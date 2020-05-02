@@ -123,9 +123,9 @@ private FirebaseUser currentUser;
 
    public void SendUserToSettings(){
     Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+   // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); 
     startActivity(intent);
-    finish();
+   // finish();
     }
     public void SendUserToLogin(){
         Intent loginIntent = new Intent(MainActivity.this,LogInActivity.class);
