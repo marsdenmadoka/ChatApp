@@ -1,31 +1,54 @@
 package marsmadoka98.gmail.whatsapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 //refer to chatfragments
 public class ChatActivity extends AppCompatActivity {
     private  String messageReceiverID,messageReceiverName,MessageReceiverImage;
+  private  String MessageSenderID;
   private Toolbar ChatToolbar;
     private TextView userName,userLastSeen;
     private CircleImageView userImage;
-
+    private ImageButton SendMessageButton;
+    private EditText MessageInputtext;
+    private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        mAuth=FirebaseAuth.getInstance();
+        MessageSenderID=mAuth.getCurrentUser().getUid();
+        RootRef= FirebaseDatabase.getInstance().getReference();
+
+
         messageReceiverID=getIntent().getExtras().get("visit_user_id").toString(); //will  these extras in our toolbar to dislay them..instead of fetching them again from db
         messageReceiverName=getIntent().getExtras().get("visit_user_name").toString();
        MessageReceiverImage=getIntent().getExtras().get("visit_user_image").toString();
@@ -49,5 +72,54 @@ public class ChatActivity extends AppCompatActivity {
         userName.setText(messageReceiverName);
         Picasso.get().load(MessageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
 
+        SendMessageButton=findViewById(R.id.Send_message_btn);
+        MessageInputtext=findViewById(R.id.input_message);
+
+
+        SendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SendMessage();
+            }
+        });
+
+    }
+
+
+    public void SendMessage(){
+
+final String MessageText=MessageInputtext.getText().toString();
+if(TextUtils.isEmpty(MessageText)){
+    Toast.makeText(ChatActivity.this, "message cant be empty", Toast.LENGTH_SHORT).show();
+}else{
+String messageSenderRef= "Message/" + MessageSenderID + "/" + messageReceiverID;
+String messageReceiveRef = "Message/" + messageReceiverID + "/" + MessageSenderID;
+
+
+DatabaseReference userMessageKeyRef = RootRef.child("Messages").child(MessageSenderID).child(messageReceiverID).push();
+
+String messagePushID=userMessageKeyRef.getKey();//having a unique random key for each messaage
+//pushing our messages to db usi HashMap
+    Map messageTextBody= new HashMap();
+    messageTextBody.put("message",MessageText);
+    messageTextBody.put("type","text");
+    messageTextBody.put("from",MessageSenderID);
+
+    Map messageBodyDetails = new HashMap();
+    messageBodyDetails.put(messageSenderRef + "/" + messagePushID,messageTextBody);
+    messageBodyDetails.put(messageReceiveRef + "/" + messagePushID,messageTextBody);
+
+    RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+        @Override
+        public void onComplete(@NonNull Task task) {
+            if(task.isSuccessful()){
+                Toast.makeText(ChatActivity.this, "message sent", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(ChatActivity.this, "Error ", Toast.LENGTH_SHORT).show();
+            }
+        MessageInputtext.setText(" ");//clear the TextView after message is sent
+        }
+    });
+}
     }
 }
