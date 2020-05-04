@@ -18,6 +18,7 @@
         android:layout_below="@+id/chat_toobar"
         android:layout_width="match_parent"
         android:layout_alignParentStart="true"
+        android:layout_above="@+id/chat_Linear_layout"
         android:layout_centerVertical="true"
         android:layout_height="match_parent"
         />

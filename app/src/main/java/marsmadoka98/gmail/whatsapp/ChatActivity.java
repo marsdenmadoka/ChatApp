@@ -87,6 +87,7 @@ public class ChatActivity extends AppCompatActivity {
 
         SendMessageButton=findViewById(R.id.Send_message_btn);
         MessageInputtext=findViewById(R.id.input_message);
+
        messageAdapter = new messagesAdapter(messagesList);
     usermessagerecyclerview=findViewById(R.id.chat_recycler_viewer);
     linearLayoutManager=new LinearLayoutManager(this);
@@ -112,6 +113,7 @@ public class ChatActivity extends AppCompatActivity {
                    messages message = dataSnapshot.getValue(messages.class);
                    messagesList.add(message);
                    messageAdapter.notifyDataSetChanged();
+                   usermessagerecyclerview.smoothScrollToPosition(usermessagerecyclerview.getAdapter().getItemCount());
                     }
 
                     @Override

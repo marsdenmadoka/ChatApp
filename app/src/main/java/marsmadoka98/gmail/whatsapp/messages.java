@@ -7,9 +7,10 @@ public class messages {
     public messages(){
 
     }
-    public messages(String from, String messages, String type) {
+
+    public messages(String from, String message, String type) {
         this.from = from;
-        this.message = messages;
+        this.message = message;
         this.type = type;
     }
 
@@ -25,8 +26,8 @@ public class messages {
         return message;
     }
 
-    public void setMessage(String messages) {
-        this.message = messages;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getType() {

@@ -1,5 +1,6 @@
 package marsmadoka98.gmail.whatsapp;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,22 +81,26 @@ usersRef.addValueEventListener(new ValueEventListener() {
 if(fromMessageType.equals("text")){
 
     holder.receivermessagetext.setVisibility(View.INVISIBLE);
+   holder.reciverimage.setVisibility(View.INVISIBLE);
     holder.sendermessagetext.setVisibility(View.INVISIBLE);
 
     if (fromUserID.equals(messageSenderID)) {
+        holder.sendermessagetext.setVisibility(View.VISIBLE);
         holder.sendermessagetext.setBackgroundResource(R.drawable.sender_message_layout);
         holder.sendermessagetext.setText(message.getMessage());
+        holder.sendermessagetext.setTextColor(Color.BLACK);
 
 
 
     }else {
-        holder.sendermessagetext.setVisibility(View.INVISIBLE);
+
 
         holder.reciverimage.setVisibility(View.VISIBLE);
         holder.receivermessagetext.setVisibility(View.VISIBLE);
 
         holder.receivermessagetext.setBackgroundResource(R.drawable.receiver_message_layout);
-        holder.sendermessagetext.setText(message.getMessage());
+        holder.receivermessagetext.setText(message.getMessage());
+        holder.receivermessagetext.setTextColor(Color.BLACK);
     }
 }
 
