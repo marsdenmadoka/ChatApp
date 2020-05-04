@@ -36,7 +36,6 @@ private Toolbar mtoolbar;
 private ViewPager myviewpager;
 private TabLayout myTablayout;
 private TabsFragmentAdapter tabsFragmentAdapter;
-private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListerner;
     private DatabaseReference RootRef;
@@ -47,7 +46,6 @@ private FirebaseUser currentUser;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     mAuth=FirebaseAuth.getInstance();
-    currentUser=mAuth.getCurrentUser();
     RootRef= FirebaseDatabase.getInstance().getReference();
 
         mtoolbar=findViewById(R.id.main_toolbar);
@@ -66,6 +64,7 @@ private FirebaseUser currentUser;
     @Override
     protected void onStart() {
         super.onStart();
+       FirebaseUser currentUser=mAuth.getCurrentUser();
         if(currentUser==null){ //if user is not login
             SendUserToLogin();
 
@@ -80,6 +79,7 @@ private FirebaseUser currentUser;
     @Override
     protected void onStop() {
         super.onStop();
+        FirebaseUser currentUser=mAuth.getCurrentUser();
         if(currentUser!=null){
             updateUserStatus("offline");
         }
@@ -88,6 +88,7 @@ private FirebaseUser currentUser;
     @Override
     protected void onDestroy() { //if the app crashes
         super.onDestroy();
+        FirebaseUser currentUser=mAuth.getCurrentUser();
         if(currentUser!=null){
             updateUserStatus("offline");
         }
@@ -135,6 +136,7 @@ private FirebaseUser currentUser;
         }
 
         if(item.getItemId()==R.id.logout_option){
+            updateUserStatus("offline");
             mAuth.signOut();
             SendUserToLogin();
         }

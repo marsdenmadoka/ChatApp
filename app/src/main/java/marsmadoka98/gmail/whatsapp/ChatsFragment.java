@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -77,14 +78,33 @@ private String currentUserID;
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                   if(dataSnapshot.exists()){
+
                       if(dataSnapshot.hasChild("image")){
+
                         retimage[0] =dataSnapshot.child("image").getValue().toString();
                           Picasso.get().load(retimage[0]).into(holder.profileimage);
                       }
-                     final String retname=dataSnapshot.child("name").getValue().toString();
+
+                      final String retname=dataSnapshot.child("name").getValue().toString();
                       final  String retstatus=dataSnapshot.child("status").getValue().toString();
                       holder.username.setText(retname);
-                      holder.userstatus.setText("Last Seen: "+"\n"+"Date " + " Time" );
+
+
+                      //retrieving last seen and online status
+                      if(dataSnapshot.child("userState").hasChild("state")){
+                          String state = dataSnapshot.child("userState").child("state").getValue().toString();
+                          String date = dataSnapshot.child("userState").child("date").getValue().toString();
+                          String time= dataSnapshot.child("userState").child("time").getValue().toString();
+                         if(state.equals("online")){
+                             holder.userstatus.setText("online");
+
+                         }else  if(state.equals("offline")){
+                             holder.userstatus.setText("Last Seen" + date + " " + time);
+                         }
+
+                      }else{
+                          holder.userstatus.setText("offline" );
+                      }
 
                  holder.itemView.setOnClickListener(new View.OnClickListener() {
                      @Override
@@ -124,11 +144,13 @@ private String currentUserID;
     public static class ChatsVieHolder extends RecyclerView.ViewHolder{
     CircleImageView profileimage;
     TextView userstatus,username;
+    //ImageView onlineIcon;
         public ChatsVieHolder(@NonNull View itemView) {
             super(itemView);
             profileimage=itemView.findViewById(R.id.users_profile_image);
             userstatus=itemView.findViewById(R.id.user_profile_status);
             username=itemView.findViewById(R.id.user_profile_name);
+           // onlineIcon=itemView.findViewById(R.id.online_status);
         }
     }
 }
