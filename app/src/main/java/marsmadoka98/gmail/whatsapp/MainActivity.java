@@ -48,7 +48,6 @@ private FirebaseUser currentUser;
         setContentView(R.layout.activity_main);
     mAuth=FirebaseAuth.getInstance();
     currentUser=mAuth.getCurrentUser();
-    currentUserID=mAuth.getCurrentUser().getUid();
     RootRef= FirebaseDatabase.getInstance().getReference();
 
         mtoolbar=findViewById(R.id.main_toolbar);
@@ -214,6 +213,8 @@ String saveCurrentTime,saveCurrentDate;
         onlineState.put("time",saveCurrentTime);
         onlineState.put("date",saveCurrentDate);
         onlineState.put("state",state);
+
+        currentUserID=mAuth.getCurrentUser().getUid();
         RootRef.child("Users").child(currentUserID).child("userState")
                 .updateChildren(onlineState);
 
