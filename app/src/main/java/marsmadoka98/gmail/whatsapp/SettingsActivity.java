@@ -111,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity {
                           Toast.makeText(SettingsActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
 
                      final String downloadUri = task.getResult().getStorage().getDownloadUrl().toString();
-                     RootRef.child("Users").child(currentUserID).child("images")
+                     RootRef.child("Users").child(currentUserID).child("image")
                              .setValue(downloadUri)
                              .addOnCompleteListener(new OnCompleteListener<Void>() {
                                  @Override

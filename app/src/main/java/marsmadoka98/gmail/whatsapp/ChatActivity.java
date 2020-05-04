@@ -102,11 +102,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        DisplayLastSeen();
+
     }
 
-    public void LastSeen(){
+    public void DisplayLastSeen(){
 
-        RootRef.child("Users").child(MessageSenderID)
+        RootRef.child("Users").child(messageReceiverID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
