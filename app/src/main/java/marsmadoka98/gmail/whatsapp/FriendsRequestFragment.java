@@ -107,6 +107,7 @@ public class FriendsRequestFragment extends Fragment {
                                                 holder.username.setText(requestUsername);
                                                 holder.userstatus.setText("want to connect with you");
 
+                                                //from this line to line 208 ignore reading the code its complex
                                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View view) {
