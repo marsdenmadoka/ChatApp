@@ -203,6 +203,7 @@ public class FriendsRequestFragment extends Fragment {
                                                         builder.show();
                                                     }
                                                 });
+                                                //end of complex code...
 
                                         }
 
