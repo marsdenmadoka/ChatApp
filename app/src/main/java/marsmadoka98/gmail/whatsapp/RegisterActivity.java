@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.w3c.dom.Text;
 
@@ -77,8 +78,12 @@ CreateAcountbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    String devicetoken= FirebaseInstanceId.getInstance().getToken();
                     String currentUserID=mAuth.getCurrentUser().getUid();
                     RootRef.child("Users").child(currentUserID).setValue("");
+
+                    RootRef.child("Users").child(currentUserID).child("device_token")
+                            .setValue(devicetoken);
 
                     mprogress.dismiss();
                     Toast.makeText(RegisterActivity.this,"Account created successful! ",Toast.LENGTH_SHORT).show();
